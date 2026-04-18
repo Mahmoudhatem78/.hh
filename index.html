@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>حوكشه STORE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --main:#ff9900;
+    --bg:#0d0d0d;
+    --card:#161616;
+    --soft:#999;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Cairo',sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:#fff;
+}
+
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    display:flex;
+    justify-content:space-between;
+    padding:15px 20px;
+    background:rgba(0,0,0,0.3);
+    backdrop-filter:blur(10px);
+    z-index:1000;
+    transition:0.3s;
+}
+
+.navbar.scrolled{
+    background:rgba(0,0,0,0.9);
+}
+
+.logo img{
+    height:40px;
+}
+
+.nav-links a{
+    margin:0 10px;
+    color:#fff;
+    text-decoration:none;
+}
+
+/* HERO */
+.hero{
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero video{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.overlay{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(to bottom,rgba(0,0,0,0.6),#0d0d0d);
+}
+
+.hero-content{
+    position:relative;
+    top:40%;
+    text-align:center;
+    animation:fadeUp 1s ease;
+}
+
+.hero h1{
+    font-size:45px;
+}
+
+.hero button{
+    margin-top:15px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:var(--main);
+    cursor:pointer;
+}
+
+/* FILTER */
+.filters{
+    display:flex;
+    gap:10px;
+    padding:20px;
+    flex-wrap:wrap;
+}
+
+.filters input, .filters select{
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#111;
+    color:#fff;
+}
+
+/* PRODUCTS */
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:var(--card);
+    padding:15px;
+    border-radius:15px;
+    position:relative;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card img{
+    width:100%;
+    border-radius:10px;
+}
+
+/* GLOW */
+.card::before{
+    content:'';
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.1),transparent);
+    top:-50%;
+    left:-50%;
+    opacity:0;
+    transition:0.5s;
+}
+
+.card:hover::before{
+    opacity:1;
+    left:100%;
+}
+
+/* ACTIONS */
+.actions{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+}
+
+.actions button{
+    border:none;
+    background:#222;
+    color:#fff;
+    padding:5px 10px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* WHATSAPP */
+.whatsapp{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    background:#25d366;
+    width:55px;
+    height:55px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    font-size:22px;
+    box-shadow:0 0 15px #25d366;
+}
+
+/* ANIMATION */
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(20px)}
+    to{opacity:1; transform:translateY(0)}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="navbar" id="nav">
+    <div class="logo">
+        <img src="logo.png">
+    </div>
+
+    <div class="nav-links">
+        <a href="#">الرئيسية</a>
+        <a href="#books">الكتب</a>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <video autoplay muted loop>
+        <source src="VIDEO_URL_HERE" type="video/mp4">
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+        <h1>حوكشه STORE</h1>
+        <p>أفضل الكتب الخارجية في مكان واحد</p>
+        <button onclick="scrollToBooks()">ابدأ التسوق</button>
+    </div>
+</section>
+
+<!-- FILTER + PRODUCTS -->
+<section id="books">
+
+<div class="filters">
+    <input type="text" id="search" placeholder="ابحث عن كتاب...">
+    
+    <select id="category">
+        <option value="all">كل الأقسام</option>
+        <option value="edu">تعليمي</option>
+        <option value="novel">روايات</option>
+        <option value="religion">ديني</option>
+    </select>
+
+    <input type="number" id="price" placeholder="أقصى سعر">
+</div>
+
+<div class="products" id="products"></div>
+
+</section>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/201000000000" class="whatsapp">💬</a>
+
+<script>
+
+// NAV EFFECT
+window.addEventListener("scroll",()=>{
+    nav.classList.toggle("scrolled",window.scrollY>50)
+})
+
+// SCROLL
+function scrollToBooks(){
+    document.getElementById("books").scrollIntoView({behavior:"smooth"});
+}
+
+// PRODUCTS DATA
+const data = [
+ {name:"فيزياء", price:120, category:"edu", img:"https://via.placeholder.com/150"},
+ {name:"رواية حب", price:90, category:"novel", img:"https://via.placeholder.com/150"},
+ {name:"كتاب ديني", price:70, category:"religion", img:"https://via.placeholder.com/150"},
+ {name:"رياضيات", price:150, category:"edu", img:"https://via.placeholder.com/150"},
+];
+
+// DISPLAY
+const container = document.getElementById("products");
+
+function show(items){
+    container.innerHTML="";
+    items.forEach(p=>{
+        container.innerHTML += `
+        <div class="card">
+            <img src="${p.img}">
+            <h3>${p.name}</h3>
+            <p>${p.price} جنيه</p>
+
+            <div class="actions">
+                <button onclick="addToCart()">🛒</button>
+                <button onclick="this.style.color='red'">❤️</button>
+            </div>
+        </div>
+        `;
+    });
+}
+
+show(data);
+
+// FILTER
+function filter(){
+    let s = search.value.toLowerCase();
+    let c = category.value;
+    let pr = price.value;
+
+    let result = data.filter(p=>{
+        return p.name.toLowerCase().includes(s) &&
+        (c==="all" || p.category===c) &&
+        (pr==="" || p.price <= pr);
+    });
+
+    show(result);
+}
+
+search.oninput = filter;
+category.onchange = filter;
+price.oninput = filter;
+
+// CART
+function addToCart(){
+    alert("تم إضافة المنتج للسلة");
+}
+
+</script>
+
+</body>
+  </html>
